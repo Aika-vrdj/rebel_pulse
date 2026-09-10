@@ -1,0 +1,110 @@
+{
+  "packs": [
+    {
+      "id": "core",
+      "title": "Rebel Pulse — Core",
+      "free": true,
+      "songs": [
+        {
+          "id": "come_get_us",
+          "title": "Come Get Us",
+          "chartUrl": "come_get_us.json",
+          "audioUrl": "come_get_us.mp3",
+          "bgVideoUrl": "come_get_us.mp4",
+          "finalVideoUrl": "come_get_us_final.mp4",
+          "phase": 1,
+          "unlocked": true
+        },
+        {
+          "id": "fantasy",
+          "title": "Fantasy",
+          "chartUrl": "fantasy.json",
+          "audioUrl": "fantasy.mp3",
+          "bgVideoUrl": "fantasy.mp4",
+          "finalVideoUrl": "fantasy.mp4",
+          "phase": 1,
+          "unlocked": true
+        },
+        {
+          "id": "where_is_aika",
+          "title": "Where Is Aika?",
+          "chartUrl": "where_is_aika.json",
+          "audioUrl": "where_is_aika.mp3",
+          "bgVideoUrl": "where_is_aika.mp4",
+          "finalVideoUrl": "where_is_aika.mp4",
+          "phase": 1,
+          "unlocked": true
+        },
+        {
+          "id": "love_song_in_binary",
+          "title": "Love Song in Binary",
+          "chartUrl": "love_song_in_binary.json",
+          "audioUrl": "love_song_in_binary.mp3",
+          "bgVideoUrl": "love_song_in_binary.mp4",
+          "finalVideoUrl": "love_song_in_binary.mp4",
+          "phase": 2,
+          "unlocked": false
+        },
+        {
+          "id": "lunar_love",
+          "title": "Lunar Love",
+          "chartUrl": "lunar_love.json",
+          "audioUrl": "lunar_love.mp3",
+          "bgVideoUrl": "lunar_love.mp4",
+          "finalVideoUrl": "lunar_love.mp4",
+          "phase": 2,
+          "unlocked": false
+        },
+        {
+          "id": "its_been_so_long",
+          "title": "Its Been So Long",
+          "chartUrl": "its_been_so_long.json",
+          "audioUrl": "its_been_so_long.mp3",
+          "bgVideoUrl": "its_been_so_long.mp4",
+          "finalVideoUrl": "its_been_so_long.mp4",
+          "phase": 2,
+          "unlocked": false
+        },
+        {
+          "id": "time_goes_by",
+          "title": "Time Goes By",
+          "chartUrl": "time_goes_by.json",
+          "audioUrl": "time_goes_by.mp3",
+          "bgVideoUrl": "time_goes_by.mp4",
+          "finalVideoUrl": "time_goes_by.mp4",
+          "phase": 3,
+          "unlocked": false
+        },
+        {
+          "id": "scrap",
+          "title": "Scrap",
+          "chartUrl": "scrap.json",
+          "audioUrl": "scrap.mp3",
+          "bgVideoUrl": "scrap.mp4",
+          "finalVideoUrl": "scrap.mp4",
+          "phase": 3,
+          "unlocked": false
+        }
+      ]
+    },
+    {
+      "id": "neon_nights",
+      "title": "Neon Nights Pack",
+      "free": false,
+      "storeUrl": "https://yourstore.example.com/neon-nights",
+      "heroBackground": "https://twyfuamtvdbtbnvbalbe.supabase.co/storage/v1/object/public/rebel_pulse/packs/neon_nights/hero_background.png",
+      "songs": [
+        {
+          "id": "glass_city",
+          "title": "Glass City",
+          "chartUrl": "https://twyfuamtvdbtbnvbalbe.supabase.co/storage/v1/object/public/rebel_pulse/packs/neon_nights/glass_city.json",
+          "audioUrl": "https://twyfuamtvdbtbnvbalbe.supabase.co/storage/v1/object/public/rebel_pulse/packs/neon_nights/glass_city.mp3",
+          "bgVideoUrl": "https://twyfuamtvdbtbnvbalbe.supabase.co/storage/v1/object/public/rebel_pulse/packs/neon_nights/glass_city.mp4",
+          "finalVideoUrl": "https://twyfuamtvdbtbnvbalbe.supabase.co/storage/v1/object/public/rebel_pulse/packs/neon_nights/glass_city_final.mp4",
+          "phase": 1,
+          "unlocked": true
+        }
+      ]
+    }
+  ]
+}

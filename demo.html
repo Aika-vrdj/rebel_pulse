@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REBEL // PULSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="demo.css">
+<style>
+  /* Modificaciones rápidas para el fondo y el marco reactivo */
+  .bg-video {
+    opacity: 1; /* Video totalmente nítido */
+  }
+  
+  .video-scrim {
+    display: none !important; /* Adiós al overlay negro opaco */
+  }
+
+  /* Contenedor de Pixi adaptado para actuar como marco/overlay general */
+  #pixi-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 5; /* Asegura que el marco reactivo esté sobre el video pero bajo la interfaz clave si lo deseas */
+  }
+</style>
+</head>
+<body>
+  <!-- ===================== INTRO VIDEO SCREEN ===================== -->
+  <div id="intro-screen" class="screen" style="background: #000; display: flex; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000;">
+    <video id="intro-video" src="intro.mp4" style="width: 100%; height: 100%; object-fit: cover;" autoplay muted playsinline></video>
+    <div style="position: absolute; bottom: 30px; right: 40px; color: rgba(255,255,255,0.7); font-family: var(--font-display); font-size: 12px; letter-spacing: 2px; text-shadow: 0 0 8px rgba(0,229,255,0.8); pointer-events: none;">
+      PRESS ANY KEY TO SKIP
+    </div>
+  </div>
+
+  <!-- ===================== AUTH / USERNAME SCREEN ===================== -->
+  <div id="auth-screen" class="screen hidden">
+    <div class="pause-panel">
+      <h2>IDENTIFY YOURSELF</h2>
+      <p class="tagline" style="margin-bottom: 20px;">Enter your Rebel alias for the global network.</p>
+      <div class="field-group">
+        <input type="text" id="username-input" placeholder="e.g. Aika_Rebel" maxlength="16" autocomplete="off" />
+      </div>
+      <button id="save-user-btn" class="menu-btn share">JOIN THE REBELLION</button>
+    </div>
+  </div>
+  
+  <!-- ===================== LEADERBOARD MODAL ===================== -->
+  <div id="leaderboard-modal" class="screen hidden" style="background: rgba(5,3,10,0.92); z-index: 100;">
+    <div class="pause-panel" style="width: min(480px, 90vw);">
+      <h2 id="lb-title">GLOBAL LEADERBOARD</h2>
+      <div id="lb-content" style="max-height: 250px; overflow-y: auto; margin-bottom: 20px; font-size: 14px;">
+        <p style="color: var(--text-dim);">Loading rankings...</p>
+      </div>
+      <button id="close-leaderboard-btn" class="menu-btn quit">CLOSE</button>
+    </div>
+  </div>
+  
+  <!-- ===================== WELCOME SCREEN ===================== -->
+  <div id="setup-screen" class="screen">
+    <!-- HERO IMAGE DE FONDO (Pantalla completa) -->
+    <div class="hero-bg-container">
+      <img src="heroimage.png" alt="Aika VRDJ" class="hero-bg-image">
+    </div>
+
+    <div class="setup-panel">
+      <div class="brand">
+        <h1>REBEL <span class="accent">//</span> PULSE</h1>
+        <p class="tagline">Dance to the Beat - Feel the Energy - Join the Rebellion.</p>
+      </div>
+
+      <p id="welcome-message" class="demo-welcome">
+        Welcome to <b>REBEL // PULSE</b>. Pick a track and press <b>Start</b> when you're ready.
+      </p>
+
+      <div class="field-group">
+        <label for="song-select">Track</label>
+        <select id="song-select"></select>
+        <button id="view-leaderboard-btn" class="menu-btn" style="margin-top: 10px; font-size: 11px; padding: 10px;">🏆 VIEW GLOBAL LEADERBOARD</button>
+      </div>
+
+      <div id="demo-status" class="demo-status">Loading…</div>
+
+      <button id="start-button" class="start-btn" disabled>LOADING…</button>
+
+      <div class="keybinds">
+        <span>D</span><span>F</span><span>J</span><span>K</span>
+        <p>— 4-lane controls —</p>
+      </div>
+    </div>
+    <div class="ticker-container">
+      <div id="announcement-ticker" class="ticker-text">
+        INITIALIZING REBEL NETWORK... FETCHING SYSTEM BROADCASTS...
+      </div>
+    </div>
+  </div>
+  
+  <!-- ===================== GAME SCREEN ===================== -->
+  <div id="game-screen" class="screen hidden">
+    <video id="bg-video" class="bg-video" muted playsinline></video>
+    <!-- Se eliminó o desactivó el video-scrim visualmente arriba en el CSS -->
+    <div id="pixi-container"></div>
+ 
+    <div id="hud">
+      <div class="hud-top">
+        <div class="hud-score">
+          <span class="hud-label">SCORE</span>
+          <span id="score-value">0</span>
+        </div>
+        <div class="hud-accuracy">
+          <span class="hud-label">ACC</span>
+          <span id="accuracy-value">100.00%</span>
+        </div>
+      </div>
+      <div class="song-progress">
+        <div id="song-progress-fill"></div>
+      </div>
+    </div>
+ 
+    <button id="pause-button" title="Pause (Esc)">II</button>
+ 
+    <div id="countdown-overlay" class="hidden">
+      <span id="countdown-number">3</span>
+    </div>
+  </div>
+
+  <!-- ===================== GAME COMPLETION SCREEN (ÚNICO Y CORREGIDO) ===================== -->
+  <div id="completion-screen" class="screen hidden" style="background: rgba(5,3,10,0.95); text-align: center; overflow-y: auto; padding: 40px 20px;">
+    <div class="pause-panel" style="position: relative; max-width: 600px; margin: 60px auto 0 auto; border-color: var(--gold); box-shadow: 0 0 30px rgba(255,210,63,0.3); overflow: visible;">
+      
+      <!-- Insignia centrada, grande (240px) y sobrepuesta en la parte superior -->
+      <div style="position: absolute; top: -120px; left: 50%; transform: translateX(-50%); z-index: 10;">
+        <img src="victory_badge.png" alt="Rebel Champion" style="width: 240px; height: 240px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(255,210,63,0.7));" onerror="this.style.display='none'">
+      </div>
+
+      <h1 style="color: var(--gold); font-family: var(--font-display); font-size: 28px; margin-top: 90px; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255,210,63,0.5);">REBELLION VICTORIOUS</h1>
+      <p class="tagline" style="margin-bottom: 20px;">You have successfully broken through all phases of the system.</p>
+      
+      <!-- Resumen de canciones completadas -->
+      <div id="completion-summary-list" style="text-align: left; background: rgba(0,0,0,0.5); border: 1px solid rgba(185,103,255,0.3); border-radius: 4px; padding: 15px; max-height: 200px; overflow-y: auto; margin-bottom: 20px; font-size: 13px;">
+        <!-- Se llena dinámicamente con JS -->
+      </div>
+
+      <button id="completion-menu-btn" class="menu-btn" style="border-color: var(--gold); color: var(--gold);">RETURN TO NEW REALITY</button>
+    </div>
+  </div>
+
+  <!-- ===================== PAUSE OVERLAY ===================== -->
+  <div id="pause-overlay" class="screen hidden">
+    <div class="pause-panel">
+      <h2>PAUSED</h2>
+      <button id="resume-button" class="menu-btn">Resume</button>
+      <button id="restart-button" class="menu-btn">Restart</button>
+      <button id="quit-button" class="menu-btn quit">Quit to menu</button>
+    </div>
+  </div>
+
+  <!-- ===================== RESULTS SCREEN ===================== -->
+  <div id="results-screen" class="screen hidden">
+    <video id="final-video" class="bg-video" muted loop playsinline></video>
+    <div class="results-panel">
+      <h2 id="results-grade">S</h2>
+      <div class="results-stats">
+        <div class="stat"><span class="stat-label">Score</span><span id="results-score">0</span></div>
+        <div class="stat"><span class="stat-label">Accuracy</span><span id="results-accuracy">0.00%</span></div>
+        <div class="stat"><span class="stat-label">Max Combo</span><span id="results-combo">0</span></div>
+        <div class="stat judg-row">
+          <span class="perfect">PERFECT <b id="results-perfect">0</b></span>
+          <span class="great">GREAT <b id="results-great">0</b></span>
+          <span class="good">GOOD <b id="results-good">0</b></span>
+          <span class="miss">MISS <b id="results-miss">0</b></span>
+        </div>
+      </div>
+      <div id="unlock-notification" class="unlock-banner hidden">⚡ ¡New Songs Unlocked! ⚡</div>
+      <button id="results-restart" class="menu-btn">Retry</button>
+      <button id="results-menu" class="menu-btn quit">Back to menu</button>
+      <button id="results-share" class="menu-btn">Share score</button>
+    </div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "pixi.js": "https://cdn.jsdelivr.net/npm/pixi.js@8.6.6/dist/pixi.mjs"
+    }
+  }
+  </script>
+  <!-- Ruta corregida apuntando directo a la raíz -->
+  <script type="module" src="js/demo.js"></script>
+</body>
+</html>
