@@ -12,6 +12,12 @@ const WINDOW_GOOD = 0.100;
 const HOLD_RELEASE_WINDOW = 0.100;
 
 const JUDGMENT_SCORE = { perfect: 300, great: 100, good: 50, miss: 0 };
+
+// Announcer voice-line clips (hello1/2/3, cheer1/2/3, streak1-4) are local files
+// alongside demo.html, unrelated to the per-song catalog audio. This is the one
+// place their extension is decided — change it here if you convert those files to
+// a different format, instead of a hardcoded string buried in _playRandomVoice().
+const VOICE_LINE_EXT = '.mp3';
 const JUDGMENT_WEIGHT = { perfect: 1.0, great: 0.7, good: 0.4, miss: 0 };
 const JUDGMENT_COLOR = { perfect: 0xffd23f, great: 0x00e5ff, good: 0xb967ff, miss: 0xff2d55 };
 
@@ -77,7 +83,7 @@ export class Game {
   _playRandomVoice(prefix, maxCount) {
     if (!this.running || this.finished) return;
     const randomIndex = Math.floor(Math.random() * maxCount) + 1;
-    const audioFileName = `${prefix}${randomIndex}.wav`;
+    const audioFileName = `${prefix}${randomIndex}${VOICE_LINE_EXT}`;
     
     const voiceAudio = new Audio(audioFileName);
     voiceAudio.volume = 0.7; // Ajusta el volumen a tu gusto
@@ -234,7 +240,7 @@ export class Game {
     // Programar el saludo inicial (ej. a los 2.5 segundos de arrancar la canción)
     setTimeout(() => {
       if (this.running && !this.finished) {
-        this._playRandomVoice('hello', 3); // Asumiendo que tienes hello1.mp3 hasta hello3.mp3
+        this._playRandomVoice('hello', 3); 
       }
     }, 2500);
   }
@@ -273,7 +279,7 @@ export class Game {
 
     // --- 1. RANDOM CHEER (Cada 30-40 segundos) ---
     if (songTime - this.lastCheerTime > this.nextCheerInterval) {
-      this._playRandomVoice('cheer', 3); // Asumiendo cheer1.mp3, cheer2.mp3, cheer3.mp3
+      this._playRandomVoice('cheer', 3); 
       this.lastCheerTime = songTime;
       this.nextCheerInterval = 30 + Math.random() * 10; // Nuevo intervalo aleatorio
     }
@@ -283,7 +289,7 @@ export class Game {
     
     // Detecta el instante exacto en que se enciende la racha por primera vez
     if (isStreakActive && !this.lastStreakActiveState) {
-      this._playRandomVoice('streak', 4); // streak1.mp3, streak2.mp3, streak3.mp3
+      this._playRandomVoice('streak', 4); 
       this.lastStreakMilestone = 5000; // Siguiente hito a buscar
     }
 
