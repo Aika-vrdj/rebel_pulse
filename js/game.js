@@ -77,7 +77,7 @@ export class Game {
   _playRandomVoice(prefix, maxCount) {
     if (!this.running || this.finished) return;
     const randomIndex = Math.floor(Math.random() * maxCount) + 1;
-    const audioFileName = `${prefix}${randomIndex}.mp3`;
+    const audioFileName = `${prefix}${randomIndex}.wav`;
     
     const voiceAudio = new Audio(audioFileName);
     voiceAudio.volume = 0.7; // Ajusta el volumen a tu gusto
